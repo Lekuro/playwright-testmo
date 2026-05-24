@@ -10,7 +10,6 @@ export class SoundEffectsPage {
   private readonly searchSubmitButtonLocator: Locator;
   private readonly priceButtonLocator: Locator;
   private readonly freeLabelLocator: Locator;
-  private readonly firstDownloadButtonLocator: Locator;
   private readonly firstTrackLocator: Locator;
 
   public constructor(page: Page) {
@@ -20,7 +19,6 @@ export class SoundEffectsPage {
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
     this.priceButtonLocator = this.page.getByRole('button', { name: /price/i }).first();
     this.freeLabelLocator = this.page.locator('label.custom-control-label', { hasText: 'Free' }).first();
-    this.firstDownloadButtonLocator = this.page.locator('button.track-download-comp').first();
     this.firstTrackLocator = this.page.locator('.div-product-card').first();
   }
 
@@ -54,7 +52,10 @@ export class SoundEffectsPage {
   }
 
   public async clickFirstDownload(): Promise<void> {
-    await this.firstDownloadButtonLocator.waitFor({ state: 'visible' });
-    await this.firstDownloadButtonLocator.click();
+    const downloadButton = this.firstTrackLocator
+      .locator('button.track-download-comp, button[aria-label*="download"], button:has([data-testid="download"])')
+      .first();
+    await downloadButton.waitFor({ state: 'visible' });
+    await downloadButton.click();
   }
 }
