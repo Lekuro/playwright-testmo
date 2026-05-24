@@ -28,6 +28,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     headless: true,
+    viewport: { width: 1600, height: 1200 },
     // viewport: null, // використання розміру вікна браузера
     // launchOptions: {
     //   slowMo: 1000, // затримка 1000мс між діями
@@ -44,12 +45,12 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        channel: 'chrome', // або не вказуй, якщо стандартний Chromium
-        viewport: null,
-        launchOptions: {
-          args: ['--start-maximized']
-          // slowMo: 1000
-        }
+        channel: 'chrome' // або не вказуй, якщо стандартний Chromium
+        // viewport: null,
+        // launchOptions: {
+        //   args: ['--start-maximized'],
+        //   slowMo: 1000
+        // }
       }
     }
 
