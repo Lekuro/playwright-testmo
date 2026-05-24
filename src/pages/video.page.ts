@@ -15,7 +15,9 @@ export class VideoPage {
     this.header = new HeaderComponent(page);
     this.searchInputLocator = this.page.getByRole('textbox').first();
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
-    this.firstVideoResultLocator = this.page.locator('a[href*="/stock-video-"]').first();
+    this.firstVideoResultLocator = this.page
+      .locator('.div-product-card a[href*="/stock-video-"], .div-product-card a[href*="/video/"]')
+      .first();
     this.addToCartButtonLocator = this.page.getByRole('button', { name: /add to cart/i }).first();
     this.benefitFreeAccountModal = new BenefitFreeAccountModal(page);
   }

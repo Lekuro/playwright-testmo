@@ -1,9 +1,11 @@
 import { Locator, Page } from '@playwright/test';
 import { HeaderComponent } from '../components/header.component';
+import { BenefitFreeAccountModal } from '../modals/benefit-free-account';
 
 export class SoundEffectsPage {
   public readonly url = '/sound-effects';
   public readonly header: HeaderComponent;
+  public readonly benefitFreeAccountModal: BenefitFreeAccountModal;
   public readonly page: Page;
 
   private readonly searchInputLocator: Locator;
@@ -15,6 +17,7 @@ export class SoundEffectsPage {
   public constructor(page: Page) {
     this.page = page;
     this.header = new HeaderComponent(page);
+    this.benefitFreeAccountModal = new BenefitFreeAccountModal(page);
     this.searchInputLocator = this.page.getByRole('textbox').first();
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
     this.priceButtonLocator = this.page.getByRole('button', { name: /price/i }).first();
@@ -48,12 +51,16 @@ export class SoundEffectsPage {
 
   public async hoverFirstTrack(): Promise<void> {
     await this.firstTrackLocator.waitFor({ state: 'visible' });
+    await this.firstTrackLocator.scrollIntoViewIfNeeded();
     await this.firstTrackLocator.hover();
   }
 
   public async clickFirstDownload(): Promise<void> {
+    await this.hoverFirstTrack();
     const downloadButton = this.firstTrackLocator
-      .locator('button.track-download-comp, button[aria-label*="download"], button:has([data-testid="download"])')
+      .locator(
+        'button.track-download-comp, button[aria-label*="download"], button:has([data-testid="download"]), button:has-text("Download")'
+      )
       .first();
     await downloadButton.waitFor({ state: 'visible' });
     await downloadButton.click();
