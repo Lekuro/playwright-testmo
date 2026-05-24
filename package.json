@@ -1,0 +1,44 @@
+{
+  "name": "playwright-testmo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint && npx playwright test --project=chromium",
+    "testmo:upload": "npx testmo automation:run:submit --name \"playwright-testmo local run\" --instance $TESTMO_URL --project-id $TESTMO_PROJECT_ID --source playwright-testmo --results test-results/junit-report.xml --resources testmo-resources.json",
+    "test:headless": "eslint && npx playwright test --headed",
+    "test:sound-effects": "eslint && npx playwright test tests/sound-effects.spec.ts --project=chromium",
+    "test:video": "eslint && npx playwright test tests/video.spec.ts --project=chromium",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lekuro/playwright-testmo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Lekuro/playwright-testmo/issues"
+  },
+  "homepage": "https://github.com/Lekuro/playwright-testmo#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.60.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@stylistic/eslint-plugin-ts": "^4.4.1",
+    "@testmo/testmo-cli": "^1.4.9",
+    "@types/node": "^25.8.0",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.4.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-unicorn": "^64.0.0",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
+  }
+}

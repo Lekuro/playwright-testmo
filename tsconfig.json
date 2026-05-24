@@ -1,0 +1,17 @@
+{
+  "include": ["**/*"],
+  "exclude": ["eslint.config.mjs", "./build/**/*", "./node_modules/**/*"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["node"],
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

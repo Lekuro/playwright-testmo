@@ -1,0 +1,57 @@
+name: Playwright Tests
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      TESTMO_URL: ${{ secrets.TESTMO_URL }}
+      TESTMO_PROJECT_ID: ${{ secrets.TESTMO_PROJECT_ID }}
+      TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
+      TESTMO_SOURCE: playwright-testmo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - name: Prepare Testmo resources file
+        if: ${{ !cancelled() && env.TESTMO_URL != '' && env.TESTMO_PROJECT_ID != '' && env.TESTMO_TOKEN != '' }}
+        run: echo '{}' > testmo-resources.json
+
+      - name: Submit results to Testmo
+        if: ${{ !cancelled() && env.TESTMO_URL != '' && env.TESTMO_PROJECT_ID != '' && env.TESTMO_TOKEN != '' }}
+        run: >-
+          npx testmo automation:run:submit
+          --name "playwright-testmo CI run #${{ github.run_number }}"
+          --instance "$TESTMO_URL"
+          --project-id "$TESTMO_PROJECT_ID"
+          --source "$TESTMO_SOURCE"
+          --results test-results/junit-report.xml
+          --resources testmo-resources.json
+
+      - name: Upload JUnit report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: test-results/junit-report.xml
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
