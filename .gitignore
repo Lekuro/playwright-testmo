@@ -4,6 +4,7 @@
 agents
 code-convention.md
 R-install.md
+scripts/
 .env
 .vscode/
 testmo-resources.json
