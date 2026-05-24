@@ -8,16 +8,14 @@ export class VideoPage {
   public readonly benefitFreeAccountModal: BenefitFreeAccountModal;
   private readonly searchInputLocator: Locator;
   private readonly searchSubmitButtonLocator: Locator;
-  private readonly firstVideoResultLocator: Locator;
+  private readonly firstVideoCardLocator: Locator;
   private readonly addToCartButtonLocator: Locator;
 
   public constructor(private readonly page: Page) {
     this.header = new HeaderComponent(page);
     this.searchInputLocator = this.page.getByRole('textbox').first();
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
-    this.firstVideoResultLocator = this.page
-      .locator('.div-product-card a[href*="/stock-video-"], .div-product-card a[href*="/video/"]')
-      .first();
+    this.firstVideoCardLocator = this.page.locator('#search-results-elements .div-product-card').first();
     this.addToCartButtonLocator = this.page.getByRole('button', { name: /add to cart/i }).first();
     this.benefitFreeAccountModal = new BenefitFreeAccountModal(page);
   }
@@ -47,7 +45,11 @@ export class VideoPage {
   }
 
   public async openFirstVideoResult(): Promise<void> {
-    await this.firstVideoResultLocator.waitFor({ state: 'visible' });
-    await this.firstVideoResultLocator.click();
+    await this.firstVideoCardLocator.waitFor({ state: 'visible' });
+    const firstVideoResultLocator = this.firstVideoCardLocator
+      .locator('a[href*="/stock-video"], a[href*="/stock-animation"], a[href*="/video-live"], a[href*="/video/"]')
+      .first();
+    await firstVideoResultLocator.waitFor({ state: 'visible' });
+    await firstVideoResultLocator.click();
   }
 }

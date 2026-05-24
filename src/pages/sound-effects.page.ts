@@ -10,7 +10,7 @@ export class SoundEffectsPage {
 
   private readonly searchInputLocator: Locator;
   private readonly searchSubmitButtonLocator: Locator;
-  private readonly priceButtonLocator: Locator;
+  private readonly priceFacetToggleLocator: Locator;
   private readonly freeLabelLocator: Locator;
   private readonly firstTrackLocator: Locator;
 
@@ -20,7 +20,9 @@ export class SoundEffectsPage {
     this.benefitFreeAccountModal = new BenefitFreeAccountModal(page);
     this.searchInputLocator = this.page.getByRole('textbox').first();
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
-    this.priceButtonLocator = this.page.getByRole('button', { name: /price/i }).first();
+    this.priceFacetToggleLocator = this.page
+      .locator('#facet-item-priceRange .facet-item-header, #facet-item-priceRange [class*="facet-item-title"], #facet-item-priceRange')
+      .first();
     this.freeLabelLocator = this.page.locator('label.custom-control-label', { hasText: 'Free' }).first();
     this.firstTrackLocator = this.page.locator('.div-product-card').first();
   }
@@ -40,8 +42,13 @@ export class SoundEffectsPage {
   }
 
   public async clickPrice(): Promise<void> {
-    await this.priceButtonLocator.waitFor({ state: 'visible' });
-    await this.priceButtonLocator.click();
+    if (await this.freeLabelLocator.isVisible()) {
+      return;
+    }
+
+    await this.priceFacetToggleLocator.waitFor({ state: 'visible' });
+    await this.priceFacetToggleLocator.click();
+    await this.freeLabelLocator.waitFor({ state: 'visible' });
   }
 
   public async selectFreeCheckbox(): Promise<void> {
