@@ -15,7 +15,11 @@ export class VideoPage {
     this.header = new HeaderComponent(page);
     this.searchInputLocator = this.page.getByRole('textbox').first();
     this.searchSubmitButtonLocator = this.page.getByRole('button', { name: /search/i }).first();
-    this.firstVideoResultLocator = this.page.locator('a[href*="/stock-video-"]').first();
+    this.firstVideoResultLocator = this.page
+      .locator(
+        '#search-results-elements .product-grid-item a[href^="https://www.motionelements.com/stock-video"], #search-results-elements .product-grid-item a[href^="/stock-video"]'
+      )
+      .first();
     this.addToCartButtonLocator = this.page.getByRole('button', { name: /add to cart/i }).first();
     this.benefitFreeAccountModal = new BenefitFreeAccountModal(page);
   }
@@ -46,6 +50,8 @@ export class VideoPage {
 
   public async openFirstVideoResult(): Promise<void> {
     await this.firstVideoResultLocator.waitFor({ state: 'visible' });
-    await this.firstVideoResultLocator.click();
+    await this.firstVideoResultLocator.scrollIntoViewIfNeeded();
+    await this.firstVideoResultLocator.click({ force: true });
+    await this.page.waitForURL(/\/stock-video/i);
   }
 }
