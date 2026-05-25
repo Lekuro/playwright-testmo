@@ -10,7 +10,7 @@ test.describe('Video Page - Unregistered User', () => {
 
   test('C3 Add Video to cart is impossible', async ({ videoPage }) => {
     await videoPage.goTo();
-    await videoPage.searchFor('horse');
+    await videoPage.searchFor('people');
     await videoPage.openFirstVideoResult();
 
     await expect(videoPage.addToCartButton()).toBeVisible();
